@@ -1,0 +1,19 @@
+export NETBPF_INSTALL_PREFIX="/"
+export NETBPF_LOG_DIR="$NETBPF_INSTALL_PREFIX/netbpf/var/log/netbpf"
+export PATH="$NETBPF_INSTALL_PREFIX/netbpf/usr/sbin:$PATH"
+export NETBPF_DEV_CFLAGS="-Og -ggdb -Wall -Wextra -Wformat-signedness -fstack-protector-all -DNETBPF_INTERNAL_CHECKS=1 -D_FORTIFY_SOURCE=2 -DNETBPF_VERIFY_LOCKS=1"
+
+alias n_edit_config="vim $NETBPF_INSTALL_PREFIX/netbpf/etc/netbpf/netbpf.conf"
+alias nreconf="autoreconf -ivf"
+alias nconf="CFLAGS=\"${NETBPF_DEV_CFLAGS}\" ./configure \
+        --prefix=\"${NETBPF_INSTALL_PREFIX}/netbpf/usr\" \
+        --sysconfdir=\"${NETBPF_INSTALL_PREFIX}/netbpf/etc\" \
+        --localstatedir=\"${NETBPF_INSTALL_PREFIX}/netbpf/var\" \
+        --libexecdir=\"${NETBPF_INSTALL_PREFIX}/netbpf/usr/libexec\" \
+        --libdir=\"${NETBPF_INSTALL_PREFIX}/netbpf/usr/lib\" \
+        --with-zlib \
+        --with-math \
+        --with-user=netbpf \
+        --disable-lto"
+alias netbpf-install="CFLAGS='${NETBPF_DEV_CFLAGS}' ./netbpf-installer.sh --install-prefix $NETBPF_INSTALL_PREFIX --dont-start-it --dont-wait --disable-lto"
+alias netbpf-build="nreconf && nconf && make"
